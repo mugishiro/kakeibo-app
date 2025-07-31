@@ -76,3 +76,57 @@ impl Item {
         }
     }
 }
+
+#[cfg(test)]
+mod models_test {
+    use super::*;
+
+    fn get_test_data() -> Vec<Item> {
+        vec![
+            Item::new(
+                "新年会".to_string(),
+                Category::Expense(ExpenseCategory::Food),
+                5000,
+                NaiveDate::from_ymd_opt(2022, 1, 10).unwrap(),
+            ),
+            Item::new(
+                "給料".to_string(),
+                Category::Income(IncomeCategory::Salary),
+                300000,
+                NaiveDate::from_ymd_opt(2022, 1, 20).unwrap(),
+            ),
+            Item::new(
+                "外食".to_string(),
+                Category::Expense(ExpenseCategory::Food),
+                3000,
+                NaiveDate::from_ymd_opt(2022, 2, 15).unwrap(),
+            ),
+            Item::new(
+                "歓迎会".to_string(),
+                Category::Expense(ExpenseCategory::Other),
+                10000,
+                NaiveDate::from_ymd_opt(2022, 4, 15).unwrap(),
+            ),
+            Item::new(
+                "旅行".to_string(),
+                Category::Expense(ExpenseCategory::Hobby),
+                100000,
+                NaiveDate::from_ymd_opt(2022, 1, 30).unwrap(),
+            ),
+        ]
+    }
+
+    #[test]
+    fn test_get_price_for_summary() {
+        let test_data = get_test_data();
+        let expected = vec![-5000, 300000, -3000, -10000, -100000];
+        let result: Vec<i32> = test_data
+            .iter()
+            .map(|data| data.get_price_for_summary())
+            .collect();
+        assert_eq!(result, expected);
+        // for (data, &expected_price) in test_data.iter().zip(expected.iter()) {
+        //     assert_eq!(data.get_price_for_summary(), expected_price);
+        // }
+    }
+}

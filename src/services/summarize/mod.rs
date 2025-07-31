@@ -81,12 +81,6 @@ mod summarize_test {
                 NaiveDate::from_ymd_opt(2022, 1, 20).unwrap(),
             ),
             super::models::Item::new(
-                "旅行".to_string(),
-                models::Category::Expense(models::ExpenseCategory::Hobby),
-                100000,
-                NaiveDate::from_ymd_opt(2022, 1, 30).unwrap(),
-            ),
-            super::models::Item::new(
                 "外食".to_string(),
                 models::Category::Expense(models::ExpenseCategory::Food),
                 3000,
@@ -97,6 +91,12 @@ mod summarize_test {
                 models::Category::Expense(models::ExpenseCategory::Other),
                 10000,
                 NaiveDate::from_ymd_opt(2022, 4, 15).unwrap(),
+            ),
+            super::models::Item::new(
+                "旅行".to_string(),
+                models::Category::Expense(models::ExpenseCategory::Hobby),
+                100000,
+                NaiveDate::from_ymd_opt(2022, 1, 30).unwrap(),
             ),
         ]
     }

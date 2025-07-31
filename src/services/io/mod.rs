@@ -20,7 +20,8 @@ pub fn read_data_or_create_new_data(file_path: &str) -> Vec<models::Item> {
 pub fn read_date_or_panic(file_path: &str) -> Vec<models::Item> {
     let file = File::open(file_path).expect("ファイルがオープンできませんでした");
     let buf_reader = BufReader::new(file);
-    let data: Vec<_> = serde_json::from_reader(buf_reader).expect("デシリアライズに失敗しました");
+    let data: Vec<models::Item> =
+        serde_json::from_reader(buf_reader).expect("デシリアライズに失敗しました");
     if data.len() == 0 {
         panic!("データが存在しません");
     }
