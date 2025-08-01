@@ -111,4 +111,83 @@ mod summarize_test {
 
         assert_eq!(get_target_dates(&test_data), expected);
     }
+
+    #[test]
+    fn test_get_filtered_data() {
+        let test_data = get_test_data();
+        let filter_date = NaiveDate::from_ymd_opt(2022, 1, 1).unwrap();
+
+        let result = get_filtered_data(&test_data, filter_date);
+        assert_eq!(result.len(), 3); // 2022年1月のデータは3件
+
+        // 2022年1月のデータのみが含まれていることを確認
+        for item in result {
+            assert_eq!(item.get_year(), 2022);
+            assert_eq!(item.get_month(), 1);
+        }
+    }
+
+    #[test]
+    fn test_get_filtered_data_empty() {
+        let test_data = get_test_data();
+        let filter_date = NaiveDate::from_ymd_opt(2023, 1, 1).unwrap();
+
+        let result = get_filtered_data(&test_data, filter_date);
+        assert_eq!(result.len(), 0);
+    }
+
+    #[test]
+    fn test_summarize_data() {
+        let test_data = get_test_data();
+        let filter_date = NaiveDate::from_ymd_opt(2022, 1, 1).unwrap();
+        let filtered_data = get_filtered_data(&test_data, filter_date);
+
+        let result = summarize_data(&filtered_data);
+        // 2022年1月の収支: -5000 + 300000 - 100000 = 195000
+        assert_eq!(result, 195000);
+    }
+
+    #[test]
+    fn test_summarize_data_empty() {
+        let empty_data: Vec<&models::Item> = vec![];
+        let result = summarize_data(&empty_data);
+        assert_eq!(result, 0);
+    }
+
+    #[test]
+    fn test_format_date() {
+        let date = NaiveDate::from_ymd_opt(2023, 5, 15).unwrap();
+        let result = format_date(date);
+        assert_eq!(result, "2023/5");
+    }
+
+    #[test]
+    fn test_format_price_positive() {
+        let result = format_price(1000);
+        assert_eq!(result, "+1000");
+    }
+
+    #[test]
+    fn test_format_price_negative() {
+        let result = format_price(-1000);
+        assert_eq!(result, "-1000");
+    }
+
+    #[test]
+    fn test_format_price_zero() {
+        let result = format_price(0);
+        assert_eq!(result, "0");
+    }
+
+    #[test]
+    fn test_print_table() {
+        let mut result_table = BTreeMap::new();
+        result_table.insert(NaiveDate::from_ymd_opt(2023, 1, 1).unwrap(), 1000);
+        result_table.insert(NaiveDate::from_ymd_opt(2023, 2, 1).unwrap(), -500);
+
+        // print_tableは標準出力に書き込むので、実際のテストでは
+        // 出力をキャプチャする必要がありますが、ここでは関数が
+        // パニックしないことを確認します
+        print_table(result_table);
+    }
 }

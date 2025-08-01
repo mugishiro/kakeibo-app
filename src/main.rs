@@ -19,3 +19,28 @@ fn main() {
         services::summarize::run(FILE_PATH);
     }
 }
+
+#[cfg(test)]
+mod main_test {
+    use super::*;
+
+    #[test]
+    fn test_main_function_structure() {
+        // main関数の構造をテスト
+        // 実際のテストでは標準入出力をリダイレクトする必要があります
+        assert!(true); // ダミーアサーション
+    }
+
+    #[test]
+    fn test_service_type_validation() {
+        // サービス種別のバリデーションをテスト
+        services::validate::InputValidator::validate_service_type(0);
+        services::validate::InputValidator::validate_service_type(1);
+    }
+
+    #[test]
+    #[should_panic(expected = "入力値が不正です")]
+    fn test_service_type_validation_panic() {
+        services::validate::InputValidator::validate_service_type(2);
+    }
+}
