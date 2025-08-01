@@ -6,7 +6,7 @@ const FILE_PATH: &str = "store/data.json";
 fn main() {
     let mut service_type = String::new();
 
-    println!("実行したい内容を入力してください(0: 登録, 1: 集計)");
+    println!("実行したい内容を入力してください(0: 登録, 1: 集計, 2: 統計)");
     io::stdin().read_line(&mut service_type).unwrap();
     let service_type: u8 = service_type.trim().parse().expect("数値で入力してください");
 
@@ -17,6 +17,8 @@ fn main() {
         services::register::run(FILE_PATH);
     } else if service_type == 1 {
         services::summarize::run(FILE_PATH);
+    } else if service_type == 2 {
+        services::statistics::run(FILE_PATH);
     }
 }
 
@@ -36,11 +38,12 @@ mod main_test {
         // サービス種別のバリデーションをテスト
         services::validate::InputValidator::validate_service_type(0);
         services::validate::InputValidator::validate_service_type(1);
+        services::validate::InputValidator::validate_service_type(2);
     }
 
     #[test]
     #[should_panic(expected = "入力値が不正です")]
     fn test_service_type_validation_panic() {
-        services::validate::InputValidator::validate_service_type(2);
+        services::validate::InputValidator::validate_service_type(3);
     }
 }

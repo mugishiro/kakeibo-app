@@ -17,7 +17,7 @@ pub fn read_data_or_create_new_data(file_path: &str) -> Vec<models::Item> {
     }
 }
 
-pub fn read_date_or_panic(file_path: &str) -> Vec<models::Item> {
+pub fn read_data_or_panic(file_path: &str) -> Vec<models::Item> {
     let file = File::open(file_path).expect("ファイルがオープンできませんでした");
     let buf_reader = BufReader::new(file);
     let data: Vec<models::Item> =
@@ -75,14 +75,14 @@ mod io_test {
     }
 
     #[test]
-    fn test_read_date_or_panic_existing_file() {
+    fn test_read_data_or_panic_existing_file() {
         let test_data = create_test_data();
         let test_file = "test_data.json";
 
         // テストファイルを作成
         write_to_json(&test_data, test_file);
 
-        let result = read_date_or_panic(test_file);
+        let result = read_data_or_panic(test_file);
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].get_name(), "テスト");
 
@@ -92,20 +92,20 @@ mod io_test {
 
     #[test]
     #[should_panic(expected = "ファイルがオープンできませんでした")]
-    fn test_read_date_or_panic_file_not_found() {
-        read_date_or_panic("non_existent_file.json");
+    fn test_read_data_or_panic_file_not_found() {
+        read_data_or_panic("non_existent_file.json");
     }
 
     #[test]
     #[should_panic(expected = "データが存在しません")]
-    fn test_read_date_or_panic_empty_file() {
+    fn test_read_data_or_panic_empty_file() {
         let test_file = "empty_test_data.json";
         let empty_data: Vec<models::Item> = vec![];
 
         // 空のファイルを作成
         write_to_json(&empty_data, test_file);
 
-        read_date_or_panic(test_file);
+        read_data_or_panic(test_file);
 
         // テストファイルを削除
         fs::remove_file(test_file).unwrap();

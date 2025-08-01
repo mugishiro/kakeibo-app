@@ -6,7 +6,7 @@ use crate::{models, services};
 
 pub fn run(file_path: &str) {
     println!("家計簿の集計を行います");
-    let data = services::io::read_date_or_panic(file_path);
+    let data = services::io::read_data_or_panic(file_path);
 
     let target_dates: BTreeSet<NaiveDate> = get_target_dates(&data);
     let mut result_table: BTreeMap<NaiveDate, i32> = BTreeMap::new();
